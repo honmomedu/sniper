@@ -84,7 +84,7 @@ function AdminView() {
           onChange={handleWinningChange}
           style={{ cursor: 'pointer' }}
         >
-          <option value="none">Random - វិលដោយចៃដន្យ (យកតែរង្វាន់ដែលមានចំនួន > 0)</option>
+          <option value="none">Random - វិលដោយចៃដន្យ (យកតែរង្វាន់ដែលមានចំនួន &gt; 0)</option>
           {prizes.map(prize => (
             <option key={prize.id} value={prize.id} disabled={prize.quantity <= 0}>
               {prize.name} {prize.quantity <= 0 ? '(អស់)' : ''}
@@ -92,7 +92,7 @@ function AdminView() {
           ))}
         </select>
         <p style={{ marginTop: '0.75rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-          * បើកំណត់រង្វាន់ណាមួយ កងវិលនឹងធ្លាក់ចំរង្វាន់នោះ (ត្រូវប្រាកដថាចំនួនរង្វាន់ > 0)។
+          * បើកំណត់រង្វាន់ណាមួយ កងវិលនឹងធ្លាក់ចំរង្វាន់នោះ (ត្រូវប្រាកដថាចំនួនរង្វាន់ &gt; 0)។
         </p>
       </div>
 
