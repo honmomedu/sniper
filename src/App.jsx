@@ -5,12 +5,12 @@ import AdminView from './components/AdminView';
 
 // Default prizes
 const DEFAULT_PRIZES = [
-  { id: 1, name: '$10', color: '#f87171' }, // red
-  { id: 2, name: '$50', color: '#60a5fa' }, // blue
-  { id: 3, name: 'គ្មានរង្វាន់', color: '#9ca3af' }, // gray
-  { id: 4, name: 'iPhone 15', color: '#fbbf24' }, // yellow
-  { id: 5, name: '$5', color: '#34d399' }, // green
-  { id: 6, name: 'ព្យាយាមម្ដងទៀត', color: '#a78bfa' }, // purple
+  { id: 1, name: '$10', color: '#f87171', quantity: 5 }, // red
+  { id: 2, name: '$50', color: '#60a5fa', quantity: 2 }, // blue
+  { id: 3, name: 'គ្មានរង្វាន់', color: '#9ca3af', quantity: 999 }, // gray
+  { id: 4, name: 'iPhone 15', color: '#fbbf24', quantity: 1 }, // yellow
+  { id: 5, name: '$5', color: '#34d399', quantity: 10 }, // green
+  { id: 6, name: 'ព្យាយាមម្ដងទៀត', color: '#a78bfa', quantity: 999 }, // purple
 ];
 
 function App() {

@@ -9,7 +9,6 @@ function UserView() {
   const [result, setResult] = useState(null);
   const [targetPrizeIndex, setTargetPrizeIndex] = useState(null);
 
-  // Sync state from localStorage
   const loadData = () => {
     const savedPrizes = JSON.parse(localStorage.getItem('prizes') || '[]');
     setPrizes(savedPrizes);
@@ -26,17 +25,28 @@ function UserView() {
     
     setResult(null);
     
-    // Determine the winning prize based on Admin setting
     const adminWinningId = localStorage.getItem('winningPrizeId');
     let targetIndex = -1;
 
-    if (adminWinningId && adminWinningId !== 'none') {
-      targetIndex = prizes.findIndex(p => p.id === Number(adminWinningId));
+    // Filter available prizes (quantity > 0)
+    const availableIndices = prizes.map((p, i) => p.quantity > 0 ? i : -1).filter(i => i !== -1);
+
+    if (availableIndices.length === 0) {
+      alert("អស់រង្វាន់សម្រាប់ចាប់ហើយ!");
+      return;
     }
 
-    // Fallback to random if no admin setting or setting is invalid
+    if (adminWinningId && adminWinningId !== 'none') {
+      const idx = prizes.findIndex(p => p.id === Number(adminWinningId));
+      if (idx !== -1 && prizes[idx].quantity > 0) {
+        targetIndex = idx;
+      }
+    }
+
+    // Fallback to random if no valid admin setting
     if (targetIndex === -1) {
-      targetIndex = Math.floor(Math.random() * prizes.length);
+      const randomIdx = Math.floor(Math.random() * availableIndices.length);
+      targetIndex = availableIndices[randomIdx];
     }
 
     setTargetPrizeIndex(targetIndex);
@@ -45,7 +55,23 @@ function UserView() {
 
   const handleSpinEnd = () => {
     setSpinning(false);
+    
+    // Decrement quantity
     const wonPrize = prizes[targetPrizeIndex];
+    if (!wonPrize) return;
+
+    const updatedPrizes = prizes.map((p, index) => {
+      if (index === targetPrizeIndex) {
+        return { ...p, quantity: Math.max(0, p.quantity - 1) };
+      }
+      return p;
+    });
+
+    // Save to state and localStorage
+    setPrizes(updatedPrizes);
+    localStorage.setItem('prizes', JSON.stringify(updatedPrizes));
+    window.dispatchEvent(new Event('storage')); // Notify admin tab
+
     setResult(wonPrize);
 
     if (wonPrize && wonPrize.name !== 'គ្មានរង្វាន់' && wonPrize.name !== 'ព្យាយាមម្ដងទៀត') {
@@ -78,7 +104,7 @@ function UserView() {
           <button
             className="btn-spin"
             onClick={handleSpin}
-            disabled={spinning || prizes.length === 0}
+            disabled={spinning || prizes.length === 0 || prizes.every(p => p.quantity <= 0)}
           >
             SPIN
           </button>
